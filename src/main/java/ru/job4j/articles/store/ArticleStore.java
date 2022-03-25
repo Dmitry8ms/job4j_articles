@@ -91,6 +91,23 @@ public class ArticleStore implements Store<Article>, AutoCloseable {
         return articles;
     }
 
+    public String findById(int id) {
+        String result = "no result";
+        LOGGER.info("Загрузка статьи с id " + id);
+        var sql = "select * from articles where id = (?)";
+        try (var statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            var selection = statement.executeQuery();
+            if (selection.next()) {
+                result = selection.getString("text");
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            throw new IllegalStateException();
+        }
+        return result;
+    }
+
     @Override
     public void close() throws Exception {
         if (connection != null) {

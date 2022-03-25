@@ -23,6 +23,8 @@ public class Application {
         var articleGenerator = new RandomArticleGenerator();
         var articleService = new SimpleArticleService(articleGenerator);
         articleService.generate(wordStore, TARGET_COUNT, articleStore);
+        LOGGER.info(articleStore.findById(1));
+        LOGGER.info(articleStore.findById(5));
     }
 
     private static Properties loadProperties() {
